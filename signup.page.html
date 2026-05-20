@@ -1,0 +1,102 @@
+<ion-content [fullscreen]="true" class="studify-auth">
+  <div class="bg-pattern"></div>
+
+  <header class="top">
+    <div class="left">
+      <span class="material-symbols-outlined brand-icon">auto_stories</span>
+      <span class="brand font-headline">Studify</span>
+    </div>
+    <button type="button" class="help" (click)="error = 'Help is not wired yet.'">Help</button>
+  </header>
+
+  <main class="shell">
+    <div class="hero">
+      <h1 class="font-headline">Join the Sanctuary</h1>
+      <p>Start your journey to deeper focus.</p>
+    </div>
+
+    <div class="card">
+      <form class="form" (ngSubmit)="onSubmit()">
+        <div *ngIf="error" class="error">{{ error }}</div>
+
+        <label class="field">
+          <span class="label">Full Name</span>
+          <span class="input">
+            <span class="material-symbols-outlined icon">person</span>
+            <input name="fullName" type="text" placeholder="Alex Rivers" required [(ngModel)]="fullName" />
+          </span>
+        </label>
+
+        <label class="field">
+          <span class="label">Institutional Email</span>
+          <span class="input">
+            <span class="material-symbols-outlined icon">school</span>
+            <input name="email" type="email" placeholder="alex@university.edu" required [(ngModel)]="email" />
+          </span>
+        </label>
+
+        <label class="field">
+          <span class="label">Password</span>
+          <span class="input">
+            <span class="material-symbols-outlined icon">lock</span>
+            <input name="password" type="password" placeholder="••••••••" required [(ngModel)]="password" />
+          </span>
+        </label>
+
+        <label class="field">
+          <span class="label">Course</span>
+          <span class="input">
+            <span class="material-symbols-outlined icon">book</span>
+            <input name="course" type="text" placeholder="e.g., Computer Science" required [(ngModel)]="course" />
+          </span>
+        </label>
+
+        <label class="field">
+          <span class="label">Year</span>
+          <span class="input">
+            <span class="material-symbols-outlined icon">calendar_today</span>
+            <select name="year" required [(ngModel)]="year">
+              <option value="">Select your year</option>
+              <option value="1">Year 1</option>
+              <option value="2">Year 2</option>
+              <option value="3">Year 3</option>
+              <option value="4">Year 4</option>
+            </select>
+          </span>
+        </label>
+
+        <button class="primary" type="submit" [disabled]="loading">
+          {{ loading ? 'Creating…' : 'Create Account' }}
+        </button>
+      </form>
+
+      <div class="sep">
+        <div class="line"></div>
+        <span>Or sign up with</span>
+        <div class="line"></div>
+      </div>
+
+      <div class="social">
+        <button type="button" class="social-btn" (click)="error = 'Google sign-up is not wired yet.'">
+          <img
+            alt=""
+            class="g"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqL3LEjWh_l3OpK6edbvMQ8a52G_zCuF-74CdxoMDc8nTaR-zVRwPlEKikB7XHpXtCYTgeeHQqZww-sE75NdjLEqgdcBvpCH_Vuj8pJP0MEK1nqwYPWFhwUaOMmOGWAo6Tb4znrpXGVS1Bg5Qq15MmDXE3yHYk8NeMnI0R4VO7zSwLxuSiJMCYbE2QxHV8_QXfVFmODS73LGG9X3W8jVo8kzedEM4NA4bO_3qdhi5QtN7MN6YwUSPqP1zEE4yF7w4s0L5-OJo5y_I"
+          />
+          Google
+        </button>
+        <button type="button" class="social-btn" (click)="error = 'Facebook sign-up is not wired yet.'">
+          <span class="material-symbols-outlined fb" style="font-variation-settings: 'FILL' 1">social_leaderboard</span>
+          Facebook
+        </button>
+      </div>
+    </div>
+
+    <p class="footer">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+  </main>
+
+  <footer class="copyright">© 2024 Studify — Designed for flow.</footer>
+</ion-content>

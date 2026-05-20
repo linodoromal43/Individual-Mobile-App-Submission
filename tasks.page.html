@@ -1,0 +1,182 @@
+<ion-content [fullscreen]="true" class="tap-highlight-transparent">
+  <div class="shape s1"></div>
+  <div class="shape s2"></div>
+  <div class="shape s3"></div>
+  <div class="shape s4"></div>
+
+  <header class="studify-topbar">
+    <div class="studify-brand">
+      <div class="avatar">
+        <img src="https://img.freepik.com/premium-vector/book-logo-design-icon-vector_9850-5058.jpg" alt="Studify" />
+      </div>
+      <div class="studify-brand__title">Studify</div>
+    </div>
+    <button class="studify-icon-btn" type="button">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+  </header>
+
+  <main class="studify-page" *ngIf="vm$ | async as vm">
+    <section class="hero">
+      <h1 class="font-headline">Deep Work Flow</h1>
+      <p>You have {{ vm.pendingCount }} tasks pending.</p>
+    </section>
+
+    <section class="grid">
+      <div class="col">
+        <div class="cat-head">
+          <h2 class="font-headline">
+            <span class="dot dot-primary"></span>
+            Academic
+          </h2>
+          <span class="badge">{{ vm.academicRemaining }} Remaining</span>
+        </div>
+
+        <div
+          class="task-row"
+          *ngFor="let t of vm.byCategory.Academic"
+          [class.completed]="t.completed"
+          (click)="openEdit(t)"
+        >
+          <button class="check" type="button" (click)="toggle(t); $event.stopPropagation()">
+            <span class="material-symbols-outlined" *ngIf="t.completed" style="font-variation-settings: 'FILL' 1"
+              >check</span
+            >
+          </button>
+          <div class="body">
+            <div class="title font-headline">{{ t.title }}</div>
+            <div class="meta">
+              <span class="due" *ngIf="t.dueAt">
+                <span class="material-symbols-outlined">schedule</span>
+                {{ dueLabel(t.dueAt) }}
+              </span>
+              <span class="course">{{ t.description || '—' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <section class="side-block">
+          <div class="cat-head">
+            <h2 class="font-headline">
+              <span class="dot dot-secondary"></span>
+              Personal
+            </h2>
+          </div>
+          <div class="mini" *ngFor="let t of vm.byCategory.Personal" (click)="openEdit(t)">
+            <div class="mini-title font-headline">{{ t.title }}</div>
+            <div class="mini-sub">{{ dueLabel(t.dueAt) || (t.completed ? 'Completed' : 'Today') }}</div>
+          </div>
+        </section>
+
+        <section class="side-block">
+          <div class="cat-head">
+            <h2 class="font-headline">
+              <span class="dot dot-tertiary"></span>
+              Extra
+            </h2>
+          </div>
+          <div class="extra" *ngFor="let t of vm.byCategory.Extra" (click)="openEdit(t)">
+            <div class="extra-title font-headline">{{ t.title }}</div>
+            <div class="extra-desc">{{ t.description }}</div>
+            <div class="extra-meta">
+              <span class="material-symbols-outlined">event</span>
+              {{ dueLabel(t.dueAt) || '—' }}
+            </div>
+          </div>
+        </section>
+
+        <section class="quote">
+          <span class="material-symbols-outlined">auto_awesome</span>
+          <p class="font-headline">Focus is the new currency.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <button class="studify-fab" type="button" (click)="openNew()">
+    <span class="material-symbols-outlined">add</span>
+  </button>
+
+  <nav class="studify-bottomnav">
+    <a routerLink="/home" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+      <span class="studify-tab__label">Home</span>
+    </a>
+    <a routerLink="/tasks" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">checklist</span>
+      <span class="studify-tab__label">Tasks</span>
+    </a>
+    <a routerLink="/focus" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">timer</span>
+      <span class="studify-tab__label">Focus</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">bar_chart</span>
+      <span class="studify-tab__label">Stats</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">person</span>
+      <span class="studify-tab__label">Profile</span>
+    </a>
+  </nav>
+
+  <div class="editor" *ngIf="showEditor">
+    <div class="overlay" (click)="closeEditor()"></div>
+    <div class="sheet">
+      <div class="sheet-head">
+        <div class="sheet-title font-headline">{{ editingId ? 'Edit Task' : 'New Task' }}</div>
+        <button class="x" type="button" (click)="closeEditor()">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form class="sheet-body" (ngSubmit)="save()">
+        <label>
+          <span>Title</span>
+          <input name="title" type="text" required [(ngModel)]="title" />
+        </label>
+        <label>
+          <span>Description</span>
+          <input name="description" type="text" [(ngModel)]="description" />
+        </label>
+        <div class="row">
+          <label>
+            <span>Category</span>
+            <select name="category" [(ngModel)]="category">
+              <option value="Academic">Academic</option>
+              <option value="Personal">Personal</option>
+              <option value="Extra">Extra</option>
+            </select>
+          </label>
+          <label>
+            <span>Priority</span>
+            <select name="priority" [(ngModel)]="priority">
+              <option value="high">high</option>
+              <option value="mid">mid</option>
+              <option value="low">low</option>
+            </select>
+          </label>
+        </div>
+        <div class="row">
+          <label>
+            <span>Due</span>
+            <input name="dueAtLocal" type="datetime-local" [(ngModel)]="dueAtLocal" />
+          </label>
+          <label>
+            <span>Sessions</span>
+            <input name="sessionsCount" type="number" min="1" max="20" [(ngModel)]="sessionsCount" />
+          </label>
+        </div>
+
+        <div class="sheet-actions">
+          <button class="save" type="submit">Save</button>
+          <button class="danger" type="button" *ngIf="editingId" (click)="removeEditing(); closeEditor()">
+            Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

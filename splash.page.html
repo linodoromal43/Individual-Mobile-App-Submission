@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true" class="splash-screen">
+  <div class="bg-pattern"></div>
+
+  <div class="shapes-container">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+
+  <div class="content">
+    <div class="icon-wrapper">
+      <div class="icon-bg">
+        <span class="material-symbols-outlined brand-icon">auto_stories</span>
+      </div>
+    </div>
+
+    <h1 class="brand-text">Studify</h1>
+    <p class="tagline">Your Cognitive Sanctuary for Deep Learning</p>
+
+    <div class="loading-container">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="progress"></div>
+      </div>
+      <span class="loading-text">{{ progress | number: '0.0-0' }}%</span>
+    </div>
+  </div>
+
+  <footer class="copyright">© 2024 Studify — Designed for flow.</footer>
+</ion-content>

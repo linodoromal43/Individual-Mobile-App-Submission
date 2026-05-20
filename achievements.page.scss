@@ -1,0 +1,393 @@
+$primary: #6366f1;
+$secondary: #5d3a7a;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+
+.achievements-page {
+  --background: linear-gradient(135deg, #f5e6fa 0%, #e8d5f2 50%, #dac9e8 100%);
+  position: relative;
+  overflow-x: hidden;
+
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+      mix-blend-mode: multiply;
+    }
+
+    .shape.a {
+      width: 300px;
+      height: 300px;
+      background: #9f7aea;
+      bottom: 10%;
+      right: 5%;
+    }
+
+    .shape.b {
+      width: 200px;
+      height: 200px;
+      background: #d6bcfa;
+      top: 20%;
+      left: -50px;
+    }
+
+    .shape.c {
+      width: 150px;
+      height: 150px;
+      background: #c084fc;
+      bottom: 30%;
+      right: 20%;
+    }
+  }
+
+  .achievements-header {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+
+    .back-btn,
+    .info-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(99, 102, 241, 0.1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: rgba(99, 102, 241, 0.2);
+      }
+
+      span {
+        color: $primary;
+        font-size: 24px;
+      }
+    }
+
+    .info-btn {
+      background: transparent;
+
+      span {
+        color: $text-secondary;
+      }
+    }
+
+    .header-title {
+      flex: 1;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $secondary;
+      margin: 0;
+    }
+  }
+
+  .achievements-content {
+    position: relative;
+    z-index: 5;
+    padding: 1.5rem;
+    max-width: 500px;
+    margin: 0 auto;
+
+    .rank-section {
+      background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+      color: white;
+      border-radius: 24px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -30%;
+        right: -10%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -20%;
+        left: -10%;
+        width: 150px;
+        height: 150px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 50%;
+      }
+
+      .rank-header {
+        margin-bottom: 0.5rem;
+
+        .rank-label {
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          opacity: 0.85;
+        }
+      }
+
+      .rank-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin: 0.25rem 0;
+      }
+
+      .rank-description {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        margin: 0.5rem 0 1.25rem;
+        line-height: 1.5;
+      }
+
+      .level-display {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+
+        .level-text {
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          opacity: 0.8;
+          padding-bottom: 4px;
+        }
+
+        .level-number {
+          font-size: 3rem;
+          font-weight: 900;
+          line-height: 1;
+        }
+      }
+
+      .earned-date {
+        font-size: 0.75rem;
+        opacity: 0.75;
+      }
+    }
+
+    .milestone-section {
+      margin-bottom: 1.5rem;
+
+      .section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin: 0 0 0.75rem;
+      }
+
+      .milestone-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 1.25rem;
+        border: 1px solid rgba(99, 102, 241, 0.1);
+
+        .milestone-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.75rem;
+
+          .milestone-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: $text-primary;
+            letter-spacing: 0.5px;
+          }
+
+          .milestone-percent {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: $primary;
+          }
+        }
+
+        .progress-bar {
+          height: 10px;
+          background: rgba(99, 102, 241, 0.12);
+          border-radius: 5px;
+          overflow: hidden;
+
+          .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #ec4899, #f97316);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+          }
+        }
+      }
+    }
+
+    .badges-section {
+      .section-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: $text-primary;
+        margin: 0 0 0.75rem;
+      }
+
+      .badges-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+
+        .badge-card {
+          background: rgba(255, 255, 255, 0.85);
+          backdrop-filter: blur(10px);
+          border-radius: 16px;
+          padding: 1.25rem 1rem;
+          border: 1px solid rgba(99, 102, 241, 0.08);
+          position: relative;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          transition: all 0.3s ease;
+
+          &:hover:not(.locked) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.12);
+          }
+
+          &.locked {
+            opacity: 0.55;
+            background: rgba(255, 255, 255, 0.5);
+
+            .locked-overlay {
+              position: absolute;
+              inset: 0;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: rgba(0, 0, 0, 0.15);
+              border-radius: 16px;
+              cursor: not-allowed;
+
+              span {
+                color: white;
+                font-size: 24px;
+              }
+            }
+          }
+
+          .badge-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            color: white;
+            font-size: 28px;
+
+            &.color-blue {
+              background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            }
+
+            &.color-pink {
+              background: linear-gradient(135deg, #ec4899, #f472b6);
+            }
+
+            &.color-purple {
+              background: linear-gradient(135deg, #a855f7, #c084fc);
+            }
+
+            &.color-orange {
+              background: linear-gradient(135deg, #f97316, #fb923c);
+            }
+
+            &:not(.color-blue):not(.color-pink):not(.color-purple):not(.color-orange) {
+              background: #d1d5db;
+              color: #9ca3af;
+            }
+          }
+
+          .badge-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: $text-primary;
+            margin: 0 0 0.35rem;
+          }
+
+          .badge-description {
+            font-size: 0.75rem;
+            color: $text-secondary;
+            margin: 0;
+            line-height: 1.4;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .achievements-page {
+    .achievements-content {
+      padding: 1.25rem 1rem;
+
+      .rank-section {
+        padding: 1.5rem 1.25rem;
+
+        .rank-title {
+          font-size: 1.5rem;
+        }
+
+        .level-number {
+          font-size: 2.5rem;
+        }
+      }
+
+      .badges-grid {
+        gap: 0.625rem;
+
+        .badge-card {
+          padding: 1rem 0.75rem;
+
+          .badge-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+          }
+
+          .badge-title {
+            font-size: 0.85rem;
+          }
+
+          .badge-description {
+            font-size: 0.7rem;
+          }
+        }
+      }
+    }
+  }
+}

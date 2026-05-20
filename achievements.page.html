@@ -1,0 +1,74 @@
+<ion-content [fullscreen]="true" class="achievements-page">
+  <div class="bg">
+    <div class="shape a"></div>
+    <div class="shape b"></div>
+    <div class="shape c"></div>
+  </div>
+
+  <header class="achievements-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <h1 class="header-title">Achievements</h1>
+    <button class="info-btn">
+      <span class="material-symbols-outlined">info</span>
+    </button>
+  </header>
+
+  <main class="achievements-content">
+    <!-- Current Rank Section -->
+    <section class="rank-section">
+      <div class="rank-header">
+        <span class="rank-label">CURRENT RANK</span>
+      </div>
+      <h2 class="rank-title">{{ currentRank }}</h2>
+      <p class="rank-description">{{ totalFocusHours | number:'1.1-1' }} hours focused. Keep up the momentum!</p>
+      <div class="level-display">
+        <span class="level-text">Level</span>
+        <span class="level-number">{{ level }}</span>
+      </div>
+      <div class="earned-date">Earned on {{ earnedDate }}</div>
+    </section>
+
+    <!-- Milestone Progress Section -->
+    <section class="milestone-section">
+      <h3 class="section-title">Milestone Progress</h3>
+      <div class="milestone-card">
+        <div class="milestone-header">
+          <span class="milestone-label">{{ milestone }}</span>
+          <span class="milestone-percent">{{ milestoneProgress }}% to Legend</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="milestoneProgress"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Badges Section -->
+    <section class="badges-section">
+      <h3 class="section-title">Badges Collected</h3>
+      <div class="badges-grid">
+        <div
+          *ngFor="let badge of badges"
+          class="badge-card"
+          [class.locked]="!badge.earned"
+          [class.color-blue]="badge.color === 'blue'"
+          [class.color-pink]="badge.color === 'pink'"
+          [class.color-purple]="badge.color === 'purple'"
+          [class.color-orange]="badge.color === 'orange'"
+        >
+          <div class="badge-icon" [class.color-blue]="badge.color === 'blue'" [class.color-pink]="badge.color === 'pink'" [class.color-purple]="badge.color === 'purple'" [class.color-orange]="badge.color === 'orange'">
+            <span class="material-symbols-outlined" [style.font-variation-settings]="getFontVariationSettings(badge.earned)">
+              {{ badge.icon }}
+            </span>
+          </div>
+          <h4 class="badge-title">{{ badge.title }}</h4>
+          <p class="badge-description">{{ badge.description }}</p>
+          <div *ngIf="!badge.earned" class="locked-overlay">
+            <span class="material-symbols-outlined">lock</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</ion-content>

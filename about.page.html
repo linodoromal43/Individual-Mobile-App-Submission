@@ -1,0 +1,56 @@
+<ion-content [fullscreen]="true" class="about-page">
+  <div class="bg">
+    <div class="shape a"></div>
+    <div class="shape b"></div>
+    <div class="shape c"></div>
+  </div>
+
+  <header class="about-header">
+    <button class="back-btn" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <h1 class="header-title">About Us</h1>
+    <div class="header-spacer"></div>
+  </header>
+
+  <main class="about-content">
+    <div class="logo-section">
+      <div class="logo-wrapper">
+        <img src="assets/LOGO.jpg" alt="Studify Logo" class="logo" />
+      </div>
+    </div>
+
+    <section class="hero-section">
+      <h2 class="hero-title">Redefining the <span class="highlight">Architecture of Focus.</span></h2>
+      <p class="hero-subtitle">
+        Studify isn't just an app; it's a digital ecosystem designed to transform the way students
+        approach deep, cognitive work with intent to support your learning journey with both tools and
+        community.
+      </p>
+    </section>
+
+    <section class="mission-section">
+      <div class="section-marker">
+        <span class="material-symbols-outlined">public</span>
+        <span class="marker-text">OUR MISSION</span>
+      </div>
+      <h3 class="section-title">Empowering Students through <span class="highlight">radical focus.</span></h3>
+      <p class="section-description">
+        We believe that productivity is not about doing more, but about doing more meaningful things. Our digital
+        tool provides a distraction-free environment where work becomes second nature.
+      </p>
+    </section>
+
+    <section class="vision-section">
+      <div class="section-marker vision-marker">
+        <span class="material-symbols-outlined">visibility</span>
+        <span class="marker-text">OUR VISION</span>
+      </div>
+      <h3 class="section-title">Creating a <span class="highlight">cognitive sanctuary.</span></h3>
+      <p class="section-description">
+        "The future of learning isn't just about acquiring knowledge, it's about building a space where academic
+        achievement is fueled by calm, not anxiety."
+      </p>
+    </section>
+  </main>
+</ion-content>

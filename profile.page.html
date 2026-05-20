@@ -1,0 +1,180 @@
+<ion-content [fullscreen]="true" class="tap-highlight-transparent">
+  <div class="bg">
+    <div class="shape a"></div>
+    <div class="shape b"></div>
+    <div class="shape c"></div>
+    <div class="shape d"></div>
+  </div>
+
+  <header class="studify-topbar">
+    <div class="studify-brand">
+      <div class="avatar">
+        <img src="https://img.freepik.com/premium-vector/book-logo-design-icon-vector_9850-5058.jpg" alt="Studify" />
+      </div>
+      <div class="studify-brand__title">Studify</div>
+    </div>
+    <button class="studify-icon-btn" type="button">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+  </header>
+
+  <main class="studify-page" *ngIf="vm$ | async as vm">
+    <section class="hero studify-card">
+      <div class="hero-glow"></div>
+      <div class="pic">
+        <div class="ring">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfLo6v--fjmg83zGiVcMd2RBrzLLJj5-3vSramKqoRz2h0Q6ua2ZTDjsI9p4bBu2X4dLoJ_xpZNd9SoIl4G5ZWFnJp298xjaGei6DSqoeGBADq_BDL6FOjSAQHV-YQfdUlFsmG2qiRgMYBNJj87IyrMZgdPnxt5v3a3lIGjxK-BQnAL3ujQgZWqDp0Fw-C2GXFMx8SK-i-X9Qb-cZ-u1rKiTiLjxoiW-tQULqnU5u9ZKEtplraZk_ogXOWStAhe3xk1NXJ3IQB9pI"
+            alt="User"
+          />
+        </div>
+        <div class="verified">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">verified</span>
+        </div>
+      </div>
+
+      <div class="hero-text">
+        <h1 class="font-headline">{{ vm.user?.fullName || 'Student' }}</h1>
+        <p class="year">2nd year</p>
+
+        <div class="chips">
+          <div class="chip studify-card">
+            <span class="k">Focus Level</span>
+            <span class="v">{{ vm.focusLevelLabel }}</span>
+          </div>
+          <div class="chip studify-card">
+            <span class="k">Study Streak</span>
+            <span class="v">{{ vm.user?.studyStreakDays || 0 }} Days</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ach">
+      <div class="row">
+        <div>
+          <h2 class="font-headline">Achievements</h2>
+          <p>Recognizing your academic milestones</p>
+        </div>
+        <button type="button" class="link" (click)="viewAllAchievements()">View All</button>
+      </div>
+
+      <div class="grid">
+        <div class="badge studify-card" *ngFor="let badge of vm.badges" [class.locked]="!badge.earned">
+          <div class="bicon" [class.prim]="badge.colorClass === 'prim'" [class.sec]="badge.colorClass === 'sec'" [class.mute]="badge.colorClass === 'mute'">
+            <span class="material-symbols-outlined" [style.font-variation-settings]="getFillStyle(badge.earned)">{{ badge.icon }}</span>
+          </div>
+          <div class="btitle">{{ badge.title }}</div>
+          <div class="bsub">{{ badge.description }}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="settings">
+      <h2 class="font-headline">App Settings</h2>
+
+      <div class="panel studify-card">
+        <button type="button" class="set-row" (click)="toggleNotifications()">
+          <div class="left">
+            <div class="iconbox t">
+              <span class="material-symbols-outlined">notifications_active</span>
+            </div>
+            <div>
+              <div class="st font-headline">Smart Notifications</div>
+              <div class="ss">Focus reminders and task alerts</div>
+            </div>
+          </div>
+          <div class="pill-toggle" [class.on]="vm.settings.smartNotifications">
+            <div class="knob"></div>
+          </div>
+        </button>
+
+        <button type="button" class="set-row" (click)="setTheme(vm.settings.theme === 'light' ? 'dark' : 'light')">
+          <div class="left">
+            <div class="iconbox p">
+              <span class="material-symbols-outlined">dark_mode</span>
+            </div>
+            <div>
+              <div class="st font-headline">Visual Theme</div>
+              <div class="ss">Switch between Light and Editorial Dark</div>
+            </div>
+          </div>
+          <div class="theme-pill">
+            <div class="opt" [class.active]="vm.settings.theme === 'light'">Light</div>
+            <div class="opt" [class.active]="vm.settings.theme === 'dark'">Dark</div>
+          </div>
+        </button>
+
+        <button type="button" class="set-row">
+          <div class="left">
+            <div class="iconbox s">
+              <span class="material-symbols-outlined">sync</span>
+            </div>
+            <div>
+              <div class="st font-headline">Cloud Sync</div>
+              <div class="ss">Backup your progress and task list</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined chev">chevron_right</span>
+        </button>
+
+        <a routerLink="/ai-study" class="set-row">
+          <div class="left">
+            <div class="iconbox p">
+              <span class="material-symbols-outlined">smart_toy</span>
+            </div>
+            <div>
+              <div class="st font-headline">AI Study Assistant</div>
+              <div class="ss">Open summaries, quizzes, flashcards, and tutor chat.</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined chev">chevron_right</span>
+        </a>
+
+        <a routerLink="/about" class="set-row">
+          <div class="left">
+            <div class="iconbox s">
+              <span class="material-symbols-outlined">info</span>
+            </div>
+            <div>
+              <div class="st font-headline">About Studify</div>
+              <div class="ss">Learn about our mission and vision</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined chev">chevron_right</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="logout">
+      <button type="button" class="logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        Logout from Studify
+      </button>
+      <div class="ver">Version 2.4.0 (Editorial Vitality Build)</div>
+    </section>
+  </main>
+
+  <nav class="studify-bottomnav">
+    <a routerLink="/home" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+      <span class="studify-tab__label">Home</span>
+    </a>
+    <a routerLink="/tasks" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">checklist</span>
+      <span class="studify-tab__label">Tasks</span>
+    </a>
+    <a routerLink="/focus" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">timer</span>
+      <span class="studify-tab__label">Focus</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">bar_chart</span>
+      <span class="studify-tab__label">Stats</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">person</span>
+      <span class="studify-tab__label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

@@ -1,0 +1,133 @@
+<ion-content [fullscreen]="true" class="tap-highlight-transparent">
+  <div class="dec d1"></div>
+  <div class="dec d2"></div>
+  <div class="dec d3"></div>
+  <div class="dec d4"></div>
+
+  <header class="studify-topbar">
+    <div class="studify-brand">
+      <div class="avatar">
+        <img src="https://img.freepik.com/premium-vector/book-logo-design-icon-vector_9850-5058.jpg" alt="Studify" />
+      </div>
+      <div class="studify-brand__title">Studify</div>
+    </div>
+    <button class="studify-icon-btn" type="button">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+  </header>
+
+  <main class="studify-page" *ngIf="vm$ | async as vm">
+    <section class="head">
+       <div>
+         <h1 class="font-headline">Weekly Progress</h1>
+         <p>{{ vm.user ? 'Welcome back, ' + (vm.user.fullName | slice:0:vm.user.fullName.indexOf(' ')) + '!' : 'Start your learning journey!' }}</p>
+       </div>
+
+      <div class="streak studify-card">
+        <div class="icon">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">local_fire_department</span>
+        </div>
+        <div>
+          <div class="num font-headline">{{ vm.user?.studyStreakDays || 0 }} Days</div>
+          <div class="lbl">Focus Streak</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="chart studify-card">
+        <div class="chart-head">
+          <div>
+            <h3 class="font-headline">Study Hours This Week</h3>
+            <p>Avg. {{ vm.weeklyAvg | number : '1.1-1' }} hours daily</p>
+          </div>
+          <div class="chip">+14%</div>
+        </div>
+
+        <div class="bars" role="img" aria-label="Study hours per day, last seven days">
+          <div class="bar-col" *ngFor="let h of vm.stats.weeklyHours; let i = index">
+            <div class="bar-track">
+              <div
+                class="stick"
+                [style.height.%]="vm.bars[i]"
+                [class.stick--peak]="i === vm.peakBarIndex && vm.bars[i] > 0"
+              ></div>
+            </div>
+            <div class="day" [class.day--peak]="i === vm.peakBarIndex && vm.bars[i] > 0">{{ vm.dayLabels[i] }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="done studify-card">
+        <h3 class="font-headline">Tasks Completed</h3>
+        <div class="big font-headline">{{ vm.stats.tasksCompletedThisWeek }}</div>
+        <p>{{ vm.stats.tasksRemainingThisWeek }} tasks remaining this week</p>
+        <div class="progress">
+          <div class="fill" [style.width.%]="clampPercent((vm.stats.tasksCompletedThisWeek / 50) * 100)"></div>
+        </div>
+        <div class="progress-row">
+          <span>Progress</span>
+          <span>{{ clampPercent((vm.stats.tasksCompletedThisWeek / 50) * 100) | number : '1.0-0' }}%</span>
+        </div>
+      </div>
+
+      <div class="rewards studify-card">
+        <div class="row">
+          <h3 class="font-headline">Recently Earned Rewards</h3>
+          <button class="link" type="button">View All</button>
+        </div>
+        <div class="reward-grid">
+          <div class="reward" *ngFor="let reward of vm.recentRewards">
+            <div class="r-ic" [class.alt]="reward.icon === 'auto_awesome'">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">{{ reward.icon }}</span>
+            </div>
+            <div>
+              <div class="r-title">{{ reward.title }}</div>
+              <div class="r-sub">{{ reward.description }}</div>
+            </div>
+          </div>
+          <div class="reward" *ngIf="vm.recentRewards.length === 0">
+            <div class="r-ic">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0">emoji_events</span>
+            </div>
+            <div>
+              <div class="r-title">No rewards yet</div>
+              <div class="r-sub">Complete tasks and focus sessions to earn rewards!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight studify-card">
+        <div class="tag">Performance</div>
+        <h3 class="font-headline">{{ vm.performanceLabel }}</h3>
+        <p>{{ vm.performanceDescription }}</p>
+        <div class="h-glow g1"></div>
+        <div class="h-glow g2"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="studify-bottomnav">
+    <a routerLink="/home" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+      <span class="studify-tab__label">Home</span>
+    </a>
+    <a routerLink="/tasks" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">checklist</span>
+      <span class="studify-tab__label">Tasks</span>
+    </a>
+    <a routerLink="/focus" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">timer</span>
+      <span class="studify-tab__label">Focus</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">bar_chart</span>
+      <span class="studify-tab__label">Stats</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">person</span>
+      <span class="studify-tab__label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

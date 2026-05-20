@@ -1,0 +1,152 @@
+<ion-content [fullscreen]="true" class="tap-highlight-transparent">
+  <div class="bg">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="geo g1"></div>
+    <div class="geo g2"></div>
+    <div class="geo g3"></div>
+  </div>
+
+  <header class="studify-topbar">
+    <div class="studify-brand">
+      <div class="avatar">
+        <img src="https://img.freepik.com/premium-vector/book-logo-design-icon-vector_9850-5058.jpg" alt="Studify" />
+      </div>
+      <div class="studify-brand__title">Studify</div>
+    </div>
+    <button class="studify-icon-btn" type="button">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+  </header>
+
+  <main class="studify-page" *ngIf="vm$ | async as vm">
+    <div class="center">
+      <div class="header">
+        <span class="kicker">{{ vm.timer.isBreak ? 'Break Time' : 'Deep Focus Mode' }}</span>
+        <h2 class="font-headline">{{ vm.timer.topic }}</h2>
+        <p class="header-sub" *ngIf="vm.timer.isBreak">Take a breather — next round starts soon.</p>
+      </div>
+
+      <div class="session-strip" [class.session-strip--dim]="vm.timer.isBreak" aria-label="Focus sessions">
+        <span
+          class="session-pill"
+          *ngFor="let n of vm.sessionSlots"
+          [class.session-pill--current]="n === vm.timer.sessionIndex && !vm.timer.isBreak"
+          [class.session-pill--done]="n < vm.timer.sessionIndex"
+          >{{ n }}</span
+        >
+      </div>
+
+      <div class="ring">
+        <svg class="ring-svg" viewBox="0 0 100 100">
+          <circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="2"></circle>
+          <circle
+            class="progress"
+            cx="50"
+            cy="50"
+            r="46"
+            fill="none"
+            stroke-width="3"
+            stroke-linecap="round"
+            [attr.stroke-dasharray]="vm.circumference"
+            [attr.stroke-dashoffset]="vm.dashOffset"
+            [class.break-timer]="vm.timer.isBreak"
+          ></circle>
+        </svg>
+
+        <div class="orb studify-card">
+          <div class="glow"></div>
+          <div class="time font-headline">{{ formatMmSs(vm.timer.remainingSeconds) }}</div>
+          <div class="session">
+            <span *ngIf="!vm.timer.isBreak" class="material-symbols-outlined fire" style="font-variation-settings: 'FILL' 1"
+              >local_fire_department</span
+            >
+            <span *ngIf="vm.timer.isBreak" class="material-symbols-outlined fire" style="font-variation-settings: 'FILL' 1"
+              >coffee</span
+            >
+            <span class="label">{{ vm.timer.isBreak ? 'Break Time' : 'Session ' + vm.timer.sessionIndex + '/' + vm.timer.sessionTarget }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="time-adjuster" *ngIf="!vm.timer.running && !vm.timer.isBreak">
+        <button class="adjust-btn" type="button" (click)="subtractTime()">
+          <span class="material-symbols-outlined">remove</span>
+        </button>
+        <span class="adjust-label">{{ formatMmSs(vm.timer.remainingSeconds) }}</span>
+        <button class="adjust-btn" type="button" (click)="addTime()">
+          <span class="material-symbols-outlined">add</span>
+        </button>
+      </div>
+
+      <div class="controls">
+        <button class="small" type="button" (click)="reset()">
+          <span class="material-symbols-outlined">replay</span>
+        </button>
+
+        <button class="play" type="button" (click)="toggleRunning()">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">{{
+            vm.timer.running ? 'pause' : 'play_arrow'
+          }}</span>
+        </button>
+
+        <button class="small" type="button" (click)="skip()">
+          <span class="material-symbols-outlined">skip_next</span>
+        </button>
+      </div>
+
+      <div class="bento">
+        <div class="tile studify-card">
+          <div class="tile-left">
+            <div class="iconbox t">
+              <span class="material-symbols-outlined">visibility</span>
+            </div>
+            <div>
+              <div class="tile-title font-headline">Fatigue Detection</div>
+              <div class="tile-sub">AI-monitored break prompts</div>
+            </div>
+          </div>
+          <button type="button" class="toggle" [class.on]="vm.settings.fatigueDetection" (click)="toggleFatigue()">
+            <span class="knob"></span>
+          </button>
+        </div>
+
+        <div class="tile studify-card">
+          <div class="tile-left">
+            <div class="iconbox s">
+              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">music_note</span>
+            </div>
+            <div>
+              <div class="tile-title font-headline">Focus Audio</div>
+              <div class="tile-sub">{{ vm.settings.focusAudioLabel }}</div>
+            </div>
+          </div>
+          <button type="button" class="change" (click)="changeAudio()">CHANGE</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="studify-bottomnav">
+    <a routerLink="/home" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+      <span class="studify-tab__label">Home</span>
+    </a>
+    <a routerLink="/tasks" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">checklist</span>
+      <span class="studify-tab__label">Tasks</span>
+    </a>
+    <a routerLink="/focus" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">timer</span>
+      <span class="studify-tab__label">Focus</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">bar_chart</span>
+      <span class="studify-tab__label">Stats</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">person</span>
+      <span class="studify-tab__label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

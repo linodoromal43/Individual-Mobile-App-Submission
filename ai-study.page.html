@@ -1,0 +1,82 @@
+<ion-content [fullscreen]="true" class="tap-highlight-transparent">
+  <main class="ai-page">
+    <section class="hero studify-card">
+      <h1 class="font-headline">AI Study Assistant</h1>
+      <p>Generate summaries, flashcards, quizzes, and simple explanations from your notes.</p>
+    </section>
+
+    <section class="panel studify-card">
+      <label class="label">Lesson Notes</label>
+      <textarea
+        rows="8"
+        [(ngModel)]="notes"
+        placeholder="Paste your notes, chapter text, or lecture bullets here..."
+      ></textarea>
+    </section>
+
+    <section class="panel studify-card">
+      <div class="label">AI Tool</div>
+      <div class="modes">
+        <button type="button" [class.active]="mode === 'summary'" (click)="setMode('summary')">Summary</button>
+        <button type="button" [class.active]="mode === 'flashcards'" (click)="setMode('flashcards')">Flashcards</button>
+        <button type="button" [class.active]="mode === 'quiz'" (click)="setMode('quiz')">Quiz</button>
+        <button type="button" [class.active]="mode === 'explain'" (click)="setMode('explain')">Explain Simply</button>
+        <button type="button" [class.active]="mode === 'chat'" (click)="setMode('chat')">Tutor Chat</button>
+      </div>
+
+      <div class="chat-box" *ngIf="mode === 'chat'">
+        <label class="label">Your Question</label>
+        <input [(ngModel)]="chatQuestion" placeholder="Ask something about your notes..." />
+      </div>
+
+      <button type="button" class="run-btn" [disabled]="loading" (click)="run()">
+        {{ loading ? 'Thinking...' : 'Generate' }}
+      </button>
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </section>
+
+    <section class="panel studify-card" *ngIf="textResult">
+      <h2 class="font-headline">Result</h2>
+      <pre>{{ textResult }}</pre>
+    </section>
+
+    <section class="panel studify-card" *ngIf="flashcards.length > 0">
+      <h2 class="font-headline">Flashcards</h2>
+      <div class="list">
+        <article class="item" *ngFor="let card of flashcards; let i = index">
+          <h3>#{{ i + 1 }} {{ card.question }}</h3>
+          <p>{{ card.answer }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel studify-card" *ngIf="quiz.length > 0">
+      <h2 class="font-headline">Quiz</h2>
+      <div class="list">
+        <article class="item" *ngFor="let q of quiz; let i = index">
+          <h3>{{ i + 1 }}. {{ q.question }}</h3>
+          <ul>
+            <li *ngFor="let c of q.choices">{{ c }}</li>
+          </ul>
+          <p><strong>Answer:</strong> {{ q.answer }}</p>
+          <p><strong>Why:</strong> {{ q.explanation }}</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <nav class="studify-bottomnav">
+    <a routerLink="/home" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">home</span>
+      <span class="studify-tab__label">Home</span>
+    </a>
+    <a routerLink="/ai-study" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">auto_awesome</span>
+      <span class="studify-tab__label">AI Study</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">person</span>
+      <span class="studify-tab__label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

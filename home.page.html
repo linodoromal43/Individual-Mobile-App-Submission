@@ -1,0 +1,204 @@
+<ion-content [fullscreen]="true" class="tap-highlight-transparent">
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <header class="studify-topbar">
+    <div class="studify-brand">
+      <div class="avatar-ring">
+        <img
+          src="https://img.freepik.com/premium-vector/book-logo-design-icon-vector_9850-5058.jpg"
+          alt="Studify"
+        />
+      </div>
+      <div class="studify-brand__title">Studify</div>
+    </div>
+    <button class="studify-icon-btn" type="button">
+      <span class="material-symbols-outlined">notifications</span>
+    </button>
+  </header>
+
+  <main class="studify-page" *ngIf="vm$ | async as vm">
+    <section class="greeting">
+      <h1 class="font-headline">Hello, {{ firstName(vm.user?.fullName) }}</h1>
+      <p>Ready for another focused session?</p>
+    </section>
+
+    <!-- ── ZenQuotes motivational card ── -->
+    <section class="quote-section">
+      <div class="quote-card studify-card">
+        <div class="quote-card__header">
+          <span class="material-symbols-outlined quote-icon">format_quote</span>
+          <span class="kicker muted">Quote of the moment</span>
+        </div>
+
+        <div *ngIf="quoteLoading()" class="quote-loading">
+          <ion-spinner name="dots"></ion-spinner>
+        </div>
+
+        <ng-container *ngIf="!quoteLoading() && currentQuote() as q">
+          <p class="quote-text">{{ q.q }}</p>
+          <p class="quote-author">— {{ q.a }}</p>
+        </ng-container>
+
+        <div class="quote-card__footer">
+          <button
+            class="quote-refresh-btn"
+            type="button"
+            (click)="nextQuote()"
+            [disabled]="quoteLoading()"
+          >
+            <span class="material-symbols-outlined">refresh</span>
+            New quote
+          </button>
+          <a
+            class="quote-attribution"
+            href="https://zenquotes.io/"
+            target="_blank"
+            rel="noopener"
+          >
+            ZenQuotes API
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div
+        class="focus-card studify-card"
+        [routerLink]="['/focus']"
+        [queryParams]="focusQueryParams(vm.focusTask)"
+      >
+        <div class="focus-card__meta">
+          <span class="kicker">Today's Focus</span>
+          <div class="pulse-dot">
+            <div class="pulse-ring"></div>
+            <div class="pulse-core"></div>
+          </div>
+        </div>
+        <h2 class="font-headline">{{ vm.focusTopic }}</h2>
+        <p class="subtitle">Deep Focus Mode</p>
+        <div class="focus-sessions-row">
+          <span class="material-symbols-outlined">layers</span>
+          <span>{{ vm.sessionSummary }}</span>
+        </div>
+
+        <div class="focus-row">
+          <div class="timer-icon">
+            <span class="material-symbols-outlined">timer</span>
+          </div>
+          <div>
+            <div class="time">{{ formatMmSs(vm.timer.remainingSeconds) }}</div>
+            <div class="small">Remaining</div>
+          </div>
+        </div>
+
+        <div class="focus-glow"></div>
+      </div>
+
+      <div class="streak-card studify-card">
+        <div class="kicker muted">Study Streak</div>
+        <div class="streak-num font-headline">{{ vm.streakDays }}</div>
+        <div class="streak-sub">Days Active</div>
+        <div class="streak-bars">
+          <div class="bar full"></div>
+          <div class="bar full"></div>
+          <div class="bar full"></div>
+          <div class="bar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="deadlines">
+      <div class="section-row">
+        <h3 class="font-headline">Upcoming Deadlines</h3>
+        <a routerLink="/tasks" class="view-all">View all</a>
+      </div>
+
+      <div class="scroll">
+        <div
+          class="task-card"
+          *ngFor="let t of vm.upcoming"
+          [class.high]="t.priority === 'high'"
+          [class.mid]="t.priority === 'mid'"
+        >
+          <div class="task-card__top">
+            <span class="pill" [class.pill-high]="t.priority === 'high'" [class.pill-mid]="t.priority === 'mid'">
+              Priority {{ t.priority }}
+            </span>
+            <span class="left">{{ dueLabel(t.dueAt) }}</span>
+          </div>
+
+          <div class="task-title font-headline">{{ t.title }}</div>
+          <div class="task-desc">{{ t.description }}</div>
+
+          <div class="task-meta" *ngIf="(t.sessionsCount || 0) > 0">
+            <span class="material-symbols-outlined">timelapse</span>
+            <span>{{ t.sessionsCount }} session{{ (t.sessionsCount || 0) === 1 ? '' : 's' }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <h3 class="font-headline">Efficiency Stats</h3>
+      <div class="stats-grid">
+        <div class="total studify-card">
+          <div class="row">
+            <div>
+              <div class="label">Total Hours</div>
+              <div class="value font-headline">{{ vm.stats.totalHours | number : '1.1-1' }}</div>
+            </div>
+            <span class="material-symbols-outlined">monitoring</span>
+          </div>
+        </div>
+        <div class="mini studify-card">
+          <div class="label">Focus Rate</div>
+          <div class="miniValue font-headline">{{ vm.stats.focusRate }}%</div>
+        </div>
+        <div class="mini studify-card">
+          <div class="label">Tasks Met</div>
+          <div class="miniValue font-headline">{{ vm.stats.tasksCompletedThisWeek }}/{{ vm.stats.tasksCompletedThisWeek + vm.stats.tasksRemainingThisWeek }}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="section-row">
+        <h3 class="font-headline">AI Study Tools</h3>
+        <a routerLink="/ai-study" class="view-all">Open</a>
+      </div>
+      <div class="task-card">
+        <div class="task-title font-headline">Summaries, Flashcards, Quiz, Tutor Chat</div>
+        <div class="task-desc">Paste your notes and generate study materials in seconds.</div>
+      </div>
+    </section>
+  </main>
+
+  <button class="studify-fab" type="button" routerLink="/tasks">
+    <span class="material-symbols-outlined">add</span>
+  </button>
+
+  <nav class="studify-bottomnav">
+    <a routerLink="/home" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">home</span>
+      <span class="studify-tab__label">Home</span>
+    </a>
+    <a routerLink="/tasks" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">checklist</span>
+      <span class="studify-tab__label">Tasks</span>
+    </a>
+    <a routerLink="/focus" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">timer</span>
+      <span class="studify-tab__label">Focus</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">bar_chart</span>
+      <span class="studify-tab__label">Stats</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="studify-tab--active" class="studify-tab">
+      <span class="material-symbols-outlined">person</span>
+      <span class="studify-tab__label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

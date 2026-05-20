@@ -1,0 +1,214 @@
+:host {
+  --auth-max-width: 430px;
+}
+
+.bg-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--studify-background);
+  background-image:
+    radial-gradient(at 0% 0%, var(--studify-surface-variant) 0px, transparent 55%),
+    radial-gradient(at 100% 0%, var(--studify-secondary-container) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, var(--studify-primary-container) 0px, transparent 55%),
+    radial-gradient(at 0% 100%, var(--studify-background) 0px, transparent 55%);
+}
+
+.auth-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 18px;
+}
+
+.auth-card {
+  width: min(100%, var(--auth-max-width));
+  background: var(--studify-card-bg);
+  border-radius: 28px;
+  padding: 28px 22px;
+  box-shadow: 0 32px 64px -16px rgba(56, 39, 76, 0.12);
+  border: 1px solid var(--studify-border-soft);
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.logo {
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--studify-primary);
+  letter-spacing: -0.04em;
+}
+.tagline {
+  color: var(--studify-on-surface-variant);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.title {
+  margin: 0 0 18px;
+  font-weight: 800;
+  font-size: 30px;
+  letter-spacing: -0.03em;
+  color: var(--studify-on-surface);
+}
+
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.error {
+  background: color-mix(in srgb, var(--studify-error-container) 20%, transparent);
+  color: var(--studify-on-surface);
+  border: 1px solid color-mix(in srgb, var(--studify-error-container) 35%, transparent);
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.label {
+  color: var(--studify-on-surface);
+  font-weight: 700;
+  font-size: 12px;
+}
+.link {
+  border: 0;
+  background: transparent;
+  color: var(--studify-primary);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.input {
+  position: relative;
+  display: grid;
+}
+.icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--studify-on-surface-variant);
+  font-size: 20px;
+}
+
+input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: var(--studify-input-bg);
+  color: var(--studify-on-surface);
+  border-radius: 18px;
+  padding: 16px 14px 16px 44px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--studify-surface-variant) 55%, transparent);
+}
+input:focus {
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--studify-primary-container) 70%, transparent),
+    0 12px 22px rgba(106, 28, 246, 0.08);
+}
+
+.primary {
+  border: 0;
+  border-radius: 18px;
+  padding: 16px 14px;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  font-weight: 800;
+  color: var(--ion-color-primary-contrast);
+  background: linear-gradient(135deg, var(--studify-primary), var(--studify-primary-dim));
+  box-shadow: 0 8px 24px rgba(106, 28, 246, 0.18);
+}
+.primary[disabled] {
+  opacity: 0.7;
+}
+
+.divider {
+  margin: 18px 0 14px;
+  position: relative;
+  text-align: center;
+  color: var(--studify-on-surface-variant);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+.divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: color-mix(in srgb, var(--studify-surface-variant) 70%, transparent);
+}
+.divider span {
+  position: relative;
+  padding: 0 12px;
+  background: var(--studify-card-bg-strong);
+}
+
+.social {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.social-btn {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--studify-surface-variant) 65%, transparent);
+  background: var(--studify-card-bg-soft);
+  padding: 12px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--studify-on-surface);
+}
+.social-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.social-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.footer {
+  margin: 18px 0 0;
+  text-align: center;
+  color: var(--studify-on-surface-variant);
+  font-weight: 600;
+  font-size: 13px;
+}
+.footer-link {
+  color: var(--studify-secondary);
+  font-weight: 800;
+  text-decoration: none;
+  margin-left: 6px;
+}
+
